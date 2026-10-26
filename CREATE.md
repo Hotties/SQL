@@ -37,6 +37,12 @@ create_specification:
 ## 3. CREATE EVENT
 
 ```jsx
+새 이벤트를 생성하고 예약하는 SQL, EVENT 권한 필요
+ON SCHEDULE : 언제, 얼마나 실행될지 결정
+DO : 실행될 SQL문을 포함하는 절
+ON COMPLETION [NOT] PRESERVE : 이벤트 완료 후 삭제 여부 결정, 기본적으로 삭제
+ENABLE|DISABLE : 이벤트 활성화 또는 비활성화, 기본적으론 ENABLE
+
 CREATE [OR REPLACE]
     [DEFINER = { user | CURRENT_USER | role | CURRENT_ROLE }]
     EVENT 
@@ -47,6 +53,9 @@ CREATE [OR REPLACE]
     [ENABLE | DISABLE | DISABLE ON SLAVE]
     [COMMENT 'comment']
     DO sql_statement
+
+AT : 일회성 이벤트에 사용
+STARTS~ENDS : 이벤트가 반복되는 경우
 
 schedule:
     AT timestamp [+ INTERVAL interval] ...
