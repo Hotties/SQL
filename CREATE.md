@@ -68,3 +68,82 @@ interval:
               WEEK | SECOND | YEAR_MONTH | DAY_HOUR | DAY_MINUTE |
               DAY_SECOND | HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND}
 ```
+
+## 4. CREATE FUNCTION
+
+```jsx
+사용자 설정 함수를 만드는 SQL
+
+CREATE [OR REPLACE]
+    [DEFINER = {user | CURRENT_USER | role | CURRENT_ROLE }]
+    [AGGREGATE] FUNCTION [IF NOT EXISTS] func_name ([func_parameter[,...]])
+    RETURNS type
+    [characteristic ...]
+    func_body
+
+func_parameter:
+    [ OUT | INOUT | IN OUT ] param_name type |
+    [ IN ] param_name type [DEFAULT value or expression]
+    ex) (IN a INT, IN b INT, OUT c INT)
+
+type:
+    Any valid MariaDB data type
+
+characteristic:
+    LANGUAGE SQL
+  | [NOT] DETERMINISTIC
+  | { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA }
+  | SQL SECURITY { DEFINER | INVOKER }
+  | COMMENT 'string'
+
+func_body:
+    Valid SQL procedure statement
+    ex)
+    DELIMITER $ ....
+			  BEGIN
+				  DECLARE c, res INT;
+				  SET res = add_func3(a, b, c) + d;
+				  if (c > 99) then
+					    return  3;
+				  else
+					    return res;
+				  end if;
+				END;
+		$$
+		DELIMITER ;
+	DELIMITER을 이용하여 내부의SQL문에서 코드처럼 ;를 여러번 넣어도 한 문장으로 인식 
+```
+
+## 5. CREATE INDEX
+
+```jsx
+CREATE [OR REPLACE] [UNIQUE|FULLTEXT|SPATIAL|VECTOR] INDEX
+    [IF NOT EXISTS] index_name
+    [index_type]
+    ON tbl_name (index_col_name,...)
+    [WAIT n | NOWAIT]
+    [index_option]
+    [algorithm_option | lock_option] ...
+
+index_col_name:
+    col_name [(length)] [ASC | DESC]
+
+index_type:
+    USING {BTREE | HASH | RTREE}
+
+index_option:
+    KEY_BLOCK_SIZE [=] value
+  | index_type
+  | WITH PARSER parser_name
+  | COMMENT 'string'
+  | CLUSTERING = {YES | NO}
+  | IGNORED | NOT IGNORED
+  | DISTANCE = {EUCLIDEAN | COSINE}
+  | M = number
+
+algorithm_option:
+    ALGORITHM [=] {DEFAULT|INPLACE|COPY|NOCOPY|INSTANT}
+
+lock_option:
+    LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
+```
